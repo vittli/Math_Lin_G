@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Theorieblatt und Übungen zu linearen Gleichungen und Gleichungssystemen für die 3. Bezirksschule.">
+<title>Lineare Gleichungen 3. Bez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: ein Heft-Blatt auf Karopapier — schmale Lesespalte, Merkkästen als "Tafelanschrieb", Übungen als nummerierte Aufgabenkarten */
+:root{
+  --paper:#f6f8fb;
+  --sheet:#ffffff;
+  --grid:#dfe6ef;
+  --ink:#1b2433;
+  --muted:#5a6678;
+  --blue:#1f4fb8;
+  --blue-soft:#e6edfb;
+  --red:#c2362b;
+  --red-soft:#fbe9e7;
+  --green:#1d7a46;
+  --green-soft:#e3f4ea;
+  --line:#cfd8e4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-math:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11161f;--sheet:#171e2a;--grid:#222b3a;--ink:#e4e9f1;--muted:#9aa6b8;
+  --blue:#7ea4ff;--blue-soft:#1d2a47;--red:#ff8a7e;--red-soft:#3a1f1d;
+  --green:#6fd29a;--green-soft:#173326;--line:#2e394b;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11161f;--sheet:#171e2a;--grid:#222b3a;--ink:#e4e9f1;--muted:#9aa6b8;
+  --blue:#7ea4ff;--blue-soft:#1d2a47;--red:#ff8a7e;--red-soft:#3a1f1d;
+  --green:#6fd29a;--green-soft:#173326;--line:#2e394b;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:24px 48px;
+}
+.sheet{max-width:52rem;margin:0 auto;background:var(--sheet);border:1px solid var(--line);border-radius:6px;
+  padding-block:clamp(20px,4vw,44px);padding-inline:clamp(16px,5vw,56px);display:flex;flex-direction:column;gap:2.5rem}
+header{display:flex;flex-direction:column;gap:.5rem;border-bottom:2px solid var(--ink);padding-bottom:1.25rem}
+.meta{display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.6rem;font-weight:800;display:flex;gap:.6rem;align-items:baseline}
+h2 .no{font-family:var(--f-math);font-size:1rem;color:var(--blue);font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;max-width:65ch}
+section{display:flex;flex-direction:column;gap:1rem}
+.lead{color:var(--muted);max-width:60ch}
+nav.toc{display:flex;flex-wrap:wrap;gap:.5rem}
+nav.toc a{font-size:.9rem;color:var(--blue);text-decoration:none;border:1px solid var(--line);padding:.3rem .7rem;border-radius:999px}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--blue-soft);outline:none}
+
+.merk{border:2px solid var(--blue);border-radius:4px;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.6rem;background:var(--blue-soft)}
+.merk .tag{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--blue)}
+.achtung{border-left:4px solid var(--red);background:var(--red-soft);padding:.75rem 1rem;border-radius:0 4px 4px 0}
+
+.calc{font-family:var(--f-math);font-size:.98rem;overflow-x:auto;display:grid;grid-template-columns:auto auto 1fr;gap:.15rem .75rem;align-items:baseline;padding:.75rem 0}
+.calc .l{text-align:right;white-space:nowrap}
+.calc .r{white-space:nowrap}
+.calc .op{color:var(--red);white-space:nowrap;font-size:.88rem;padding-left:1rem;border-left:1px solid var(--line)}
+.calc .done{font-weight:600;color:var(--blue)}
+code,.m{font-family:var(--f-math);font-size:.95em;white-space:nowrap}
+
+.sys{font-family:var(--f-math);display:inline-grid;align-self:flex-start;justify-self:start;grid-template-columns:auto auto;gap:.1rem .6rem;border-left:3px solid var(--ink);padding:.25rem .8rem;margin:.25rem 0}
+.sys span:nth-child(odd){color:var(--muted)}
+
+.methods{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.method{border:1px solid var(--line);border-radius:4px;padding:1rem;display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.method .when{font-size:.88rem;color:var(--muted)}
+.method .calc{grid-template-columns:auto auto;font-size:.9rem}
+
+.tabs{display:flex;flex-wrap:wrap;gap:.4rem;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:700;font-size:.95rem;background:none;border:0;border-bottom:3px solid transparent;padding:.5rem .8rem;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue)}
+.tabs button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:.4rem}
+figure svg{width:100%;max-width:26rem;height:auto}
+figcaption{font-size:.88rem;color:var(--muted)}
+
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:.5rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-size:.95rem}
+.score b{font-variant-numeric:tabular-nums}
+.bar{flex:1;height:8px;background:var(--grid);border-radius:99px;overflow:hidden;max-width:14rem}
+.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+
+.tasks{display:flex;flex-direction:column;gap:1rem}
+.task{border:1px solid var(--line);border-radius:4px;padding:1rem;display:flex;flex-direction:column;gap:.7rem}
+.task.ok{border-color:var(--green);background:var(--green-soft)}
+.task-head{display:flex;gap:.75rem;align-items:baseline;flex-wrap:wrap}
+.task-head .nr{font-family:var(--f-math);font-weight:600;color:var(--blue)}
+.task-head .lvl{margin-left:auto;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.q{font-family:var(--f-math);font-size:1.05rem;overflow-x:auto}
+.q.text{font-family:var(--f-body)}
+.answer{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.answer label{font-family:var(--f-math);display:flex;gap:.4rem;align-items:center}
+.answer input{font:inherit;font-family:var(--f-math);width:6.5rem;padding:.35rem .5rem;border:1px solid var(--line);border-radius:4px;background:var(--sheet);color:var(--ink)}
+.answer input:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.btn{font:inherit;font-weight:700;font-size:.9rem;padding:.4rem .9rem;border-radius:4px;border:1px solid var(--blue);background:var(--blue);color:var(--sheet);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.fb{font-weight:700;font-size:.95rem}
+.fb.good{color:var(--green)} .fb.bad{color:var(--red)}
+details{border-top:1px dashed var(--line);padding-top:.5rem}
+summary{cursor:pointer;color:var(--blue);font-weight:700;font-size:.92rem}
+details .calc{font-size:.9rem}
+.reset{align-self:flex-start}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1rem}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header>
+  <div class="meta"><span>Mathematik</span><span>3. Bezirksschule · Aargau</span><span>Theorie &amp; Übungen</span></div>
+  <h1>Lineare Gleichungen</h1>
+  <p class="lead">Wie man eine Gleichung mit einer Unbekannten Schritt für Schritt löst, und wie man zwei Gleichungen mit zwei Unbekannten gemeinsam löst.</p>
+  <nav class="toc" aria-label="Inhalt">
+    <a href="#t1">1 Grundlagen</a><a href="#t2">2 Lösungsschritte</a><a href="#t3">3 Gleichungssysteme</a><a href="#t4">4 Drei Methoden</a><a href="#ueb">Übungen</a>
+  </nav>
+</header>
+
+<section id="t1">
+  <h2><span class="no">1</span>Was ist eine lineare Gleichung?</h2>
+  <p>Eine Gleichung ist <b>linear</b>, wenn die Unbekannte (meist <span class="m">x</span>) nur in der ersten Potenz vorkommt: kein <span class="m">x²</span>, kein <span class="m">x</span> im Nenner, keine Wurzel aus <span class="m">x</span>. Jede lineare Gleichung lässt sich auf die Form <span class="m">a·x + b = 0</span> bringen.</p>
+  <div class="merk">
+    <span class="tag">Merke</span>
+    <p>Eine Gleichung ist wie eine <b>Waage im Gleichgewicht</b>. Was du auf der einen Seite machst, musst du auch auf der anderen Seite machen. So bleibt die Lösung gleich. Solche Schritte heissen <b>Äquivalenzumformungen</b>.</p>
+  </div>
+  <p>Erlaubt sind auf beiden Seiten:</p>
+  <ul>
+    <li>die gleiche Zahl oder den gleichen Term <b>addieren</b> oder <b>subtrahieren</b></li>
+    <li>mit der gleichen Zahl <b>multiplizieren</b> oder durch die gleiche Zahl <b>dividieren</b> (aber nie mit 0!)</li>
+  </ul>
+  <p>Den Umformungsschritt schreibt man rechts hinter einen senkrechten Strich, zum Beispiel <span class="m">| −5</span> oder <span class="m">| :3</span>.</p>
+</section>
+
+<section id="t2">
+  <h2><span class="no">2</span>Lösen in vier Schritten</h2>
+  <ol>
+    <li><b>Vereinfachen:</b> Klammern auflösen, Brüche wegmultiplizieren, gleichartige Terme zusammenfassen.</li>
+    <li><b>Sortieren:</b> alle <span class="m">x</span>-Terme auf eine Seite, alle Zahlen auf die andere.</li>
+    <li><b>Isolieren:</b> durch die Zahl vor dem <span class="m">x</span> teilen.</li>
+    <li><b>Probe:</b> Lösung in die <i>ursprüngliche</i> Gleichung einsetzen.</li>
+  </ol>
+  <h3>Beispiel A: ohne Klammern</h3>
+  <div class="calc" role="group" aria-label="Rechnung Beispiel A">
+    <span class="l">5x + 4</span><span>= 2x + 19</span><span class="op">| −2x</span>
+    <span class="l">3x + 4</span><span>= 19</span><span class="op">| −4</span>
+    <span class="l">3x</span><span>= 15</span><span class="op">| :3</span>
+    <span class="l done">x</span><span class="done">= 5</span><span></span>
+  </div>
+  <p><b>Probe:</b> links <span class="m">5·5 + 4 = 29</span>, rechts <span class="m">2·5 + 19 = 29</span>. Beide Seiten gleich, also stimmt <span class="m">x = 5</span>.</p>
+
+  <h3>Beispiel B: mit Klammer</h3>
+  <div class="calc" role="group" aria-label="Rechnung Beispiel B">
+    <span class="l">4(x − 3)</span><span>= 2x + 6</span><span class="op">Klammer auflösen</span>
+    <span class="l">4x − 12</span><span>= 2x + 6</span><span class="op">| −2x</span>
+    <span class="l">2x − 12</span><span>= 6</span><span class="op">| +12</span>
+    <span class="l">2x</span><span>= 18</span><span class="op">| :2</span>
+    <span class="l done">x</span><span class="done">= 9</span><span></span>
+  </div>
+
+  <h3>Beispiel C: mit Brüchen</h3>
+  <div class="calc" role="group" aria-label="Rechnung Beispiel C">
+    <span class="l">x/2 + x/3</span><span>= 10</span><span class="op">| ·6 (Hauptnenner)</span>
+    <span class="l">3x + 2x</span><span>= 60</span><span class="op">zusammenfassen</span>
+    <span class="l">5x</span><span>= 60</span><span class="op">| :5</span>
+    <span class="l done">x</span><span class="done">= 12</span><span></span>
+  </div>
+  <div class="achtung"><b>Typischer Fehler:</b> Ein Minus vor der Klammer dreht <i>alle</i> Vorzeichen in der Klammer: <span class="m">7 − (x − 2) = 7 − x + 2</span>, nicht <span class="m">7 − x − 2</span>.</div>
+</section>
+
+<section id="t3">
+  <h2><span class="no">3</span>Lineare Gleichungssysteme</h2>
+  <p>Manchmal gibt es <b>zwei Unbekannte</b>, <span class="m">x</span> und <span class="m">y</span>. Eine einzelne Gleichung wie <span class="m">x + y = 12</span> hat dann unendlich viele Lösungen (7 und 5, 10 und 2, …). Erst eine <b>zweite Gleichung</b> legt fest, welches Zahlenpaar gemeint ist. Zusammen bilden sie ein <b>Gleichungssystem</b>.</p>
+  <div class="sys" aria-label="Gleichungssystem"><span>I</span><span>x + y = 12</span><span>II</span><span>2x − y = 9</span></div>
+  <div class="merk">
+    <span class="tag">Merke</span>
+    <p>Die Lösung ist ein <b>Zahlenpaar (x | y)</b>, das <b>beide</b> Gleichungen gleichzeitig erfüllt. Im Koordinatensystem ist jede Gleichung eine Gerade, und die Lösung ist ihr <b>Schnittpunkt</b>.</p>
+  </div>
+  <figure>
+    <svg viewBox="0 0 300 260" role="img" aria-label="Zwei Geraden y = 12 − x und y = 2x − 9 schneiden sich im Punkt (7 | 5)">
+      <g stroke="var(--grid)" stroke-width="1">
+        <!-- x 0..12 -> 30..270 (20px), y 0..12 -> 230..? scale 15px: y=0 at 230, y=12 at 50 -->
+        <line x1="70" y1="50" x2="70" y2="230"/><line x1="110" y1="50" x2="110" y2="230"/><line x1="150" y1="50" x2="150" y2="230"/><line x1="190" y1="50" x2="190" y2="230"/><line x1="230" y1="50" x2="230" y2="230"/><line x1="270" y1="50" x2="270" y2="230"/>
+        <line x1="30" y1="200" x2="270" y2="200"/><line x1="30" y1="170" x2="270" y2="170"/><line x1="30" y1="140" x2="270" y2="140"/><line x1="30" y1="110" x2="270" y2="110"/><line x1="30" y1="80" x2="270" y2="80"/><line x1="30" y1="50" x2="270" y2="50"/>
+      </g>
+      <g stroke="var(--ink)" stroke-width="1.5" fill="none">
+        <line x1="30" y1="230" x2="278" y2="230"/><line x1="30" y1="230" x2="30" y2="40"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)">
+        <text x="110" y="244" text-anchor="middle">4</text><text x="190" y="244" text-anchor="middle">8</text><text x="270" y="244" text-anchor="middle">12</text>
+        <text x="24" y="173" text-anchor="end">4</text><text x="24" y="113" text-anchor="end">8</text><text x="24" y="53" text-anchor="end">12</text>
+        <text x="284" y="234" fill="var(--ink)">x</text><text x="26" y="36" fill="var(--ink)">y</text>
+      </g>
+      <!-- y=12-x : x0->y12 (30,50), x12->y0 (270,230) -->
+      <line x1="30" y1="50" x2="270" y2="230" stroke="var(--blue)" stroke-width="2.5"/>
+      <!-- y=2x-9 : x4.5->y0 (120,230), x10.5->y12 (240,50) -->
+      <line x1="120" y1="230" x2="240" y2="50" stroke="var(--red)" stroke-width="2.5"/>
+      <circle cx="170" cy="155" r="5" fill="var(--ink)"/>
+      <text x="178" y="166" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="var(--ink)">(7 | 5)</text>
+      <text x="42" y="46" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="var(--blue)">I</text>
+      <text x="248" y="56" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="var(--red)">II</text>
+    </svg>
+    <figcaption>Blau: Gerade I (y = 12 − x). Rot: Gerade II (y = 2x − 9). Sie schneiden sich bei x = 7 und y = 5. Das ist die Lösung des Systems.</figcaption>
+  </figure>
+  <p>Zeichnen ist ungenau. Darum rechnet man die Lösung aus. Die Idee aller drei Methoden ist gleich: <b>eine Unbekannte verschwinden lassen</b>, sodass eine gewöhnliche lineare Gleichung mit nur noch einer Unbekannten übrig bleibt.</p>
+</section>
+
+<section id="t4">
+  <h2><span class="no">4</span>Die drei Lösungsmethoden</h2>
+  <p>Alle drei Methoden lösen hier dasselbe System <span class="m">I: x + y = 12</span> und <span class="m">II: 2x − y = 9</span>.</p>
+  <div class="tabs" role="tablist" aria-label="Methoden">
+    <button role="tab" id="tab-g" aria-controls="m-g" aria-selected="true">Gleichsetzung</button>
+    <button role="tab" id="tab-e" aria-controls="m-e" aria-selected="false" tabindex="-1">Einsetzung / Ersatz</button>
+    <button role="tab" id="tab-a" aria-controls="m-a" aria-selected="false" tabindex="-1">Addition</button>
+  </div>
+
+  <div class="method" id="m-g" role="tabpanel" aria-labelledby="tab-g">
+    <h3>Gleichsetzungsmethode</h3>
+    <p><b>Idee:</b> Beide Gleichungen nach <i>derselben</i> Unbekannten auflösen. Weil beide Male dasselbe <span class="m">y</span> herauskommt, darf man die rechten Seiten gleichsetzen.</p>
+    <div class="calc">
+      <span class="l">I:</span><span>y = 12 − x</span>
+      <span class="l">II:</span><span>y = 2x − 9</span>
+      <span class="l">gleichsetzen:</span><span>12 − x = 2x − 9</span>
+      <span class="l">| +x, +9:</span><span>21 = 3x</span>
+      <span class="l">| :3:</span><span class="done">x = 7</span>
+      <span class="l">in I:</span><span class="done">y = 12 − 7 = 5</span>
+    </div>
+    <p class="when"><b>Praktisch, wenn</b> beide Gleichungen schon nach derselben Variablen aufgelöst sind, z. B. <span class="m">y = …</span> und <span class="m">y = …</span>.</p>
+  </div>
+
+  <div class="method" id="m-e" role="tabpanel" aria-labelledby="tab-e" hidden>
+    <h3>Einsetzungsmethode (Ersatzmethode)</h3>
+    <p><b>Idee:</b> Eine Gleichung nach einer Unbekannten auflösen und diesen Term in der <i>anderen</i> Gleichung für die Unbekannte einsetzen, also sie damit <b>ersetzen</b>.</p>
+    <div class="calc">
+      <span class="l">I nach x:</span><span>x = 12 − y</span>
+      <span class="l">in II:</span><span>2(12 − y) − y = 9</span>
+      <span class="l">ausmultipl.:</span><span>24 − 2y − y = 9</span>
+      <span class="l">zusammenf.:</span><span>24 − 3y = 9</span>
+      <span class="l">| −24, :(−3):</span><span class="done">y = 5</span>
+      <span class="l">in I:</span><span class="done">x = 12 − 5 = 7</span>
+    </div>
+    <p class="when"><b>Praktisch, wenn</b> eine Gleichung schon nach einer Variablen aufgelöst ist oder eine Variable den Faktor 1 hat. Wichtig: den eingesetzten Term in <b>Klammern</b> schreiben.</p>
+  </div>
+
+  <div class="method" id="m-a" role="tabpanel" aria-labelledby="tab-a" hidden>
+    <h3>Additionsmethode</h3>
+    <p><b>Idee:</b> Die beiden Gleichungen so addieren (linke Seite + linke Seite, rechte Seite + rechte Seite), dass eine Unbekannte wegfällt. Dazu müssen ihre Faktoren <b>Gegenzahlen</b> sein, hier <span class="m">+y</span> und <span class="m">−y</span>.</p>
+    <div class="calc">
+      <span class="l">I:</span><span>x + y = 12</span>
+      <span class="l">II:</span><span>2x − y = 9</span>
+      <span class="l">I + II:</span><span>3x = 21</span>
+      <span class="l">| :3:</span><span class="done">x = 7</span>
+      <span class="l">in I:</span><span class="done">7 + y = 12 → y = 5</span>
+    </div>
+    <p class="when"><b>Praktisch, wenn</b> beide Gleichungen die Form <span class="m">ax + by = c</span> haben. Passen die Faktoren nicht, multipliziert man zuerst eine (oder beide) Gleichungen, z. B. <span class="m">I · 2</span>, bis Gegenzahlen entstehen.</p>
+  </div>
+
+  <div class="merk">
+    <span class="tag">Für alle Methoden</span>
+    <p>Gleichungen mit <b>I</b> und <b>II</b> beschriften. Am Ende die Lösung als Zahlenpaar angeben, z. B. <b>L = {(7 | 5)}</b>, und die Probe in <b>beiden</b> Gleichungen machen: <span class="m">7 + 5 = 12</span> ✓ und <span class="m">2·7 − 5 = 9</span> ✓.</p>
+  </div>
+</section>
+
+<section id="ueb">
+  <h2><span class="no">5</span>Übungen</h2>
+  <p>Löse im Heft und trage das Resultat ein. Dezimalzahlen mit Punkt oder Komma. Bei Gleichungssystemen ist die vorgeschlagene Methode angegeben.</p>
+  <div class="score" aria-live="polite"><span>Richtig gelöst: <b id="sc">0</b> / <b id="tot">0</b></span><span class="bar"><i id="scbar"></i></span></div>
+  <h3>Teil A · Gleichungen mit einer Unbekannten</h3>
+  <div class="tasks" id="tasksA"></div>
+  <h3>Teil B · Gleichungssysteme</h3>
+  <div class="tasks" id="tasksB"></div>
+  <button class="btn ghost reset" id="reset" type="button">Alle Eingaben löschen</button>
+</section>
+
+<footer>Theorieblatt Mathematik · Lineare Gleichungen und Gleichungssysteme · 3. Bezirksschule</footer>
+</div>
+
+<script>
+const A = [
+ {q:"4x − 7 = 13", v:["x"], s:[5], lvl:"leicht", tip:"Zuerst +7, dann durch 4.",
+  w:[["4x − 7 = 13","| +7"],["4x = 20","| :4"],["x = 5",""]]},
+ {q:"5x + 3 = 2x + 21", v:["x"], s:[6], lvl:"leicht", tip:"Die x-Terme auf die linke Seite bringen: −2x.",
+  w:[["5x + 3 = 2x + 21","| −2x"],["3x + 3 = 21","| −3"],["3x = 18","| :3"],["x = 6",""]]},
+ {q:"3(x − 2) = 2x + 4", v:["x"], s:[10], lvl:"mittel", tip:"Klammer auflösen: 3x − 6.",
+  w:[["3x − 6 = 2x + 4","| −2x"],["x − 6 = 4","| +6"],["x = 10",""]]},
+ {q:"7 − 2(x + 1) = x − 4", v:["x"], s:[3], lvl:"mittel", tip:"Minus vor der Klammer: −2x − 2.",
+  w:[["7 − 2x − 2 = x − 4","zusammenfassen"],["5 − 2x = x − 4","| +2x, +4"],["9 = 3x","| :3"],["x = 3",""]]},
+ {q:"x/3 + 2 = 6", v:["x"], s:[12], lvl:"leicht", tip:"Zuerst −2, dann mit 3 multiplizieren.",
+  w:[["x/3 + 2 = 6","| −2"],["x/3 = 4","| ·3"],["x = 12",""]]},
+ {q:"(x + 4)/2 = (2x − 1)/3", v:["x"], s:[14], lvl:"anspruchsvoll", tip:"Mit dem Hauptnenner 6 multiplizieren.",
+  w:[["3(x + 4) = 2(2x − 1)","| ·6"],["3x + 12 = 4x − 2","| −3x, +2"],["14 = x",""]]},
+ {q:"0.5x − 1.5 = 2.5", v:["x"], s:[8], lvl:"leicht", tip:"+1.5, dann durch 0.5 teilen (oder ·2).",
+  w:[["0.5x = 4","| +1.5"],["x = 8","| :0.5"]]},
+ {q:"Die Summe von drei aufeinanderfolgenden natürlichen Zahlen ist 72. Wie heisst die kleinste Zahl?", text:true, v:["kleinste Zahl"], s:[23], lvl:"Text", tip:"Nenne die kleinste Zahl x. Die anderen sind x + 1 und x + 2.",
+  w:[["x + (x + 1) + (x + 2) = 72",""],["3x + 3 = 72","| −3"],["3x = 69","| :3"],["x = 23 → Zahlen 23, 24, 25",""]]}
+];
+const B = [
+ {q:["I: y = 3x − 4","II: y = x + 6"], m:"Gleichsetzung", v:["x","y"], s:[5,11], lvl:"leicht", tip:"Die rechten Seiten gleichsetzen: 3x − 4 = x + 6.",
+  w:[["3x − 4 = x + 6","| −x, +4"],["2x = 10","| :2"],["x = 5",""],["y = 5 + 6 = 11","in II"]]},
+ {q:["I: y = 2x + 1","II: 3x + 2y = 23"], m:"Einsetzung", v:["x","y"], s:[3,7], lvl:"leicht", tip:"(2x + 1) in II für y einsetzen, mit Klammer.",
+  w:[["3x + 2(2x + 1) = 23","I in II"],["7x + 2 = 23","| −2"],["7x = 21","| :7"],["x = 3",""],["y = 2·3 + 1 = 7","in I"]]},
+ {q:["I: 2x + 3y = 12","II: 4x − 3y = 6"], m:"Addition", v:["x","y"], s:[3,2], lvl:"mittel", tip:"+3y und −3y sind Gegenzahlen. Addiere I und II.",
+  w:[["6x = 18","I + II"],["x = 3","| :6"],["6 + 3y = 12","in I"],["y = 2",""]]},
+ {q:["I: 3x + 2y = 16","II: x + 4y = 12"], m:"Addition", v:["x","y"], s:[4,2], lvl:"anspruchsvoll", tip:"Rechne I · 2 und subtrahiere dann II (oder II · (−1) addieren).",
+  w:[["6x + 4y = 32","I · 2"],["5x = 20","(I·2) − II"],["x = 4","| :5"],["4 + 4y = 12","in II"],["y = 2",""]]},
+ {q:["I: x − y = 3","II: 2x + 3y = 21"], m:"freie Wahl", v:["x","y"], s:[6,3], lvl:"mittel", tip:"Zum Beispiel I nach x auflösen: x = y + 3, dann in II einsetzen.",
+  w:[["x = y + 3","I nach x"],["2(y + 3) + 3y = 21","in II"],["5y + 6 = 21","| −6, :5"],["y = 3",""],["x = 3 + 3 = 6",""]]},
+ {q:["Am Schulfest kostet ein Stück Kuchen 3 Fr. und ein Getränk 2 Fr. Es werden insgesamt 50 Artikel für 130 Fr. verkauft. Wie viele Kuchenstücke (x) und Getränke (y) waren es?"], text:true, m:"freie Wahl", v:["x","y"], s:[30,20], lvl:"Text", tip:"I: x + y = 50 (Anzahl), II: 3x + 2y = 130 (Franken).",
+  w:[["I: x + y = 50, II: 3x + 2y = 130",""],["2x + 2y = 100","I · 2"],["x = 30","II − I·2"],["y = 50 − 30 = 20",""]]},
+ {q:["Auf einem Bauernhof gibt es Hühner (x) und Kaninchen (y). Zusammen haben sie 35 Köpfe und 94 Beine. Wie viele Tiere von jeder Art sind es?"], text:true, m:"freie Wahl", v:["x","y"], s:[23,12], lvl:"Text", tip:"I: x + y = 35 (Köpfe), II: 2x + 4y = 94 (Beine).",
+  w:[["I: x + y = 35, II: 2x + 4y = 94",""],["2x + 2y = 70","I · 2"],["2y = 24","II − I·2"],["y = 12","| :2"],["x = 35 − 12 = 23",""]]}
+];
+
+const solved = new Set();
+let total = 0;
+function parse(v){ v = String(v).trim().replace(",", ".").replace("−","-"); if(v==="") return NaN; return Number(v); }
+function updateScore(){
+  document.getElementById("sc").textContent = solved.size;
+  document.getElementById("tot").textContent = total;
+  document.getElementById("scbar").style.width = (total ? solved.size/total*100 : 0) + "%";
+}
+function workHTML(w){
+  return '<div class="calc" style="grid-template-columns:auto auto">' + w.map(([a,b]) =>
+    '<span class="r">'+a+'</span><span class="op">'+(b||"")+'</span>').join("") + '</div>';
+}
+function build(list, el, prefix){
+  list.forEach((t, i) => {
+    total++;
+    const id = prefix + (i+1);
+    const div = document.createElement("div");
+    div.className = "task";
+    const qHTML = Array.isArray(t.q)
+      ? (t.text ? '<p class="q text">'+t.q[0]+'</p>' : '<div class="sys">'+t.q.map(l=>{const [a,b]=l.split(": ");return '<span>'+a+'</span><span>'+b+'</span>';}).join("")+'</div>')
+      : '<p class="q'+(t.text?' text':'')+'">'+t.q+'</p>';
+    const inputs = t.v.map((v,j)=>'<label for="'+id+'-'+j+'">'+v+' =<input id="'+id+'-'+j+'" inputmode="decimal" autocomplete="off"></label>').join("");
+    div.innerHTML =
+      '<div class="task-head"><span class="nr">'+id+'</span>' + (t.m?'<span><b>Methode:</b> '+t.m+'</span>':'') + '<span class="lvl">'+t.lvl+'</span></div>' +
+      qHTML +
+      '<form class="answer">'+inputs+'<button class="btn" type="submit">Prüfen</button><span class="fb" aria-live="polite"></span></form>' +
+      '<details><summary>Tipp</summary><p>'+t.tip+'</p></details>' +
+      '<details><summary>Lösungsweg</summary>'+workHTML(t.w)+'</details>';
+    const form = div.querySelector("form"), fb = div.querySelector(".fb");
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const vals = t.v.map((_,j)=>parse(document.getElementById(id+'-'+j).value));
+      if(vals.some(isNaN)){ fb.className="fb bad"; fb.textContent="Bitte alle Felder ausfüllen."; return; }
+      const ok = vals.every((x,j)=>Math.abs(x - t.s[j]) < 1e-9);
+      if(ok){ fb.className="fb good"; fb.textContent="Richtig! Mach noch die Probe."; div.classList.add("ok"); solved.add(id); }
+      else { fb.className="fb bad"; fb.textContent="Noch nicht. Prüfe deine Rechnung oder öffne den Tipp."; div.classList.remove("ok"); solved.delete(id); }
+      updateScore();
+    });
+    el.appendChild(div);
+  });
+}
+build(A, document.getElementById("tasksA"), "A");
+build(B, document.getElementById("tasksB"), "B");
+updateScore();
+
+document.getElementById("reset").addEventListener("click", () => {
+  document.querySelectorAll(".answer input").forEach(i=>i.value="");
+  document.querySelectorAll(".fb").forEach(f=>{f.textContent="";f.className="fb";});
+  document.querySelectorAll(".task.ok").forEach(t=>t.classList.remove("ok"));
+  document.querySelectorAll("details[open]").forEach(d=>d.open=false);
+  solved.clear(); updateScore();
+});
+
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function select(tab){
+  tabs.forEach(t=>{const on=t===tab;t.setAttribute("aria-selected",on);t.tabIndex=on?0:-1;document.getElementById(t.getAttribute("aria-controls")).hidden=!on;});
+  tab.focus();
+}
+tabs.forEach((t,i)=>{
+  t.addEventListener("click",()=>select(t));
+  t.addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight") select(tabs[(i+1)%tabs.length]);
+    if(e.key==="ArrowLeft") select(tabs[(i-1+tabs.length)%tabs.length]);
+  });
+});
+</script>
+</body>
+</html>
